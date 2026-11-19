@@ -503,32 +503,15 @@ function writeChunked_(cache, prefix, value) {
   }
 }
 /* ================= IMAGE EXPORT BYPASS =================
-   Converts Google Drive image URLs (like Dredge Master photos) 
+   Converts Google Drive image URLs (like Dredge Master photos)
    into raw Base64 data so html2canvas can screenshot them without CORS errors.
+
+   Security: this used to fetch ANY address it was given, and anyone who
+   opens the web app can call it. It now goes through the same allow-list as
+   getDashboardExportImages (ExportImages.gs): only the equipment icons and
+   the photos listed in the ReferenceValues sheet are fetched.
 */
 function getBase64Images(urls) {
-  var map = {};
-  
-  // Filter down to unique URLs to prevent redundant fetching
-  var uniqueUrls = urls.filter(function(item, pos) { 
-    return urls.indexOf(item) == pos; 
-  });
-  
-  uniqueUrls.forEach(function(url) {
-    if (!url) return;
-    try {
-      var res = UrlFetchApp.fetch(url, {muteHttpExceptions: true});
-      if (res.getResponseCode() === 200) {
-        var blob = res.getBlob();
-        var type = blob.getContentType() || 'image/png';
-        if (type.indexOf('image/') === 0) {
-          map[url] = 'data:' + type + ';base64,' + Utilities.base64Encode(blob.getBytes());
-        }
-      }
-    } catch(e) {
-      // Silently fail if a specific image can't be fetched
-    }
-  });
-  
-  return map;
+  const list = Array.isArray(urls) ? urls.slice(0, 64) : [];
+  return getDashboardExportImages(list).images;
 }
