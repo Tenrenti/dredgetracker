@@ -21,6 +21,9 @@ Equipment location and status monitoring for DPWH dredging equipment, hosted on 
 | `Code.gs` | Apps Script server code (paste into the Apps Script project) |
 | `ExportImages.gs` | Apps Script image-export helper (unchanged) |
 | `appsscript.json` | Apps Script manifest (unchanged) |
+| `favicon-32.png`, `favicon-48.png` | DPWH logo browser tab icons |
+| `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | DPWH logo home-screen app icons |
+| `manifest.webmanifest` | App name and icons for "Add to Home Screen" / Install app |
 
 ## Updating the Apps Script side
 
